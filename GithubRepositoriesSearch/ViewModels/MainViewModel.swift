@@ -6,15 +6,16 @@
 //
 
 import Foundation
+import Combine
 
 protocol MainViewModelInput {
-    func reload()
-    func loadMore()
+    func searchRepository(by name: String?)
+    func loadMore(by page: Int)
     func showRepositorInfo(by index: Int)
 }
 
 protocol MainViewModelOutput {
-    
+    var models: AnyPublisher<[RepositoryElementModel], Never> { get }
 }
 
 protocol MainViewModelPrototype {
@@ -25,20 +26,49 @@ protocol MainViewModelPrototype {
 // MARK: - View model
 class MainViewModel: MainViewModelPrototype {
     
+    let reaction = PassthroughSubject<RepositoryListModel, Never>()
     
-
     var input: MainViewModelInput { self }
     var output: MainViewModelOutput { self }
     
+    private var cancelable = Set<AnyCancellable>()
+    private var isLoading = true
+
+    @Published private var repositoryModels = [RepositoryElementModel]()
+    @Published private var page = 1
 }
 
+// MARK: - Input & Output
 extension MainViewModel: MainViewModelInput {
     
-    func reload() {
+    func searchRepository(by name: String?) {
+
+        guard let name = name, name.count > 0 else {
+            self.repositoryModels.removeAll()
+            return
+        }
         
+        GithubDB.request(.searchRepository, name: name)
+            .mapError { error -> Error in
+                print(error)
+                return error
+            }
+            .sink { _ in
+                
+            } receiveValue: {
+                print($0.incomplete_results)
+                print($0.total_count)
+                self.repositoryModels = $0.items
+            }
+            .store(in: &cancelable)
+
     }
     
-    func loadMore() {
+    func loadMore(by page: Int) {
+        
+        guard !isLoading else {
+            return
+        }
         
     }
     
@@ -48,4 +78,10 @@ extension MainViewModel: MainViewModelInput {
     
 }
 
-extension MainViewModel: MainViewModelOutput { }
+extension MainViewModel: MainViewModelOutput {
+    
+    var models: AnyPublisher<[RepositoryElementModel], Never> {
+        $repositoryModels.eraseToAnyPublisher()
+    }
+    
+}

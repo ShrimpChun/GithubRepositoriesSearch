@@ -7,7 +7,8 @@
 
 import UIKit
 
-class MainCoordinator: Coordinator<Void> {
+
+class MainCoordinator: Coordinator {
     
     // MARK: - Private
     private let window: UIWindow
@@ -21,7 +22,10 @@ class MainCoordinator: Coordinator<Void> {
         let vc = MainViewController()
         navigationController = UINavigationController(rootViewController: vc)
         
+        let viewModel = MainViewModel()
+        
         rootViewController = vc
+        vc.viewModel = viewModel
         
         window.rootViewController = navigationController
     }

@@ -10,7 +10,7 @@ import Foundation
 infix operator -->
 
 // MARK: - Prepare class instance
-func --> <T>(object: T, closure: (T) -> ()) -> T {
+func --> <T>(object: T, closure: (T) -> Void) -> T {
     closure(object)
     return object
 }

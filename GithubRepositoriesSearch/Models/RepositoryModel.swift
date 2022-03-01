@@ -7,16 +7,17 @@
 
 import Foundation
 
-struct RepositoryModel: Codable {
+// MARK: - RepositoryElementModel
+struct RepositoryElementModel: Codable {
     
-    let id: String
+    let id: Int
     let node_id: String
     let name: String
     let full_name: String
-    let `private`: String
+    let `private`: Bool
     let html_url : String
-    let description: String
-    let fork: String
+    let description: String?
+    let fork: Bool
     let url: String
     let forks_url: String
     let keys_url: String
@@ -65,7 +66,7 @@ struct RepositoryModel: Codable {
     let size: Int
     let stargazers_count: Int
     let watchers_count: Int
-    let language: String
+    let language: String?
     let has_issues: Bool
     let has_projects: Bool
     let has_downloads: Bool
@@ -120,5 +121,13 @@ struct License: Codable {
     let spdx_id: String
     let url: String?
     let node_id: String
+    
+}
+
+struct RepositoryListModel: Codable {
+    
+    let total_count: Int
+    let incomplete_results: Bool
+    let items: [RepositoryElementModel]
     
 }

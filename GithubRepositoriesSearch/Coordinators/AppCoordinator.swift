@@ -5,10 +5,12 @@
 //  Created by Shrimp Hsieh on 2022/3/1.
 //
 
-import Foundation
 import UIKit
 
-class AppCoordinator: Coordinator<Void> {
+class AppCoordinator: Coordinator {
+    
+    // MARK: - Private property
+    private let window: UIWindow
     
     // MARK: - Life cycle
     init(window: UIWindow) {
@@ -16,7 +18,9 @@ class AppCoordinator: Coordinator<Void> {
     }
     
     override func start() {
-        let next = MainViewController()
+        let next = MainCoordinator(window: window)
+        next.start()
+        store(coordinator: next)
     }
     
 }

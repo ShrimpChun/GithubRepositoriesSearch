@@ -16,7 +16,10 @@
 		6C295BC127CE0CCB00ECAE81 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C295BC027CE0CCB00ECAE81 /* MainViewModel.swift */; };
 		6C295BC427CE0CF000ECAE81 /* RepositoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C295BC327CE0CF000ECAE81 /* RepositoryModel.swift */; };
 		6C295BC627CE11A800ECAE81 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C295BC527CE11A800ECAE81 /* MainCoordinator.swift */; };
-		6C295BC927CE141600ECAE81 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C295BC827CE141600ECAE81 /* APIService.swift */; };
+		6C295BC927CE141600ECAE81 /* APIBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C295BC827CE141600ECAE81 /* APIBase.swift */; };
+		6C61FC6C27CE49DB00261858 /* RepositoriesListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C61FC6B27CE49DB00261858 /* RepositoriesListTableViewCell.swift */; };
+		6C61FC7127CE608100261858 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C61FC7027CE608100261858 /* UIImage+Extension.swift */; };
+		6C61FC7327CE6C8600261858 /* GithubDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C61FC7227CE6C8600261858 /* GithubDB.swift */; };
 		6C907C4A27CDFD1500115B39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C907C4927CDFD1500115B39 /* AppDelegate.swift */; };
 		6C907C4C27CDFD1500115B39 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C907C4B27CDFD1500115B39 /* SceneDelegate.swift */; };
 		6C907C5127CDFD1500115B39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C907C4F27CDFD1500115B39 /* Main.storyboard */; };
@@ -34,7 +37,10 @@
 		6C295BC027CE0CCB00ECAE81 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		6C295BC327CE0CF000ECAE81 /* RepositoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryModel.swift; sourceTree = "<group>"; };
 		6C295BC527CE11A800ECAE81 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
-		6C295BC827CE141600ECAE81 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		6C295BC827CE141600ECAE81 /* APIBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIBase.swift; sourceTree = "<group>"; };
+		6C61FC6B27CE49DB00261858 /* RepositoriesListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesListTableViewCell.swift; sourceTree = "<group>"; };
+		6C61FC7027CE608100261858 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		6C61FC7227CE6C8600261858 /* GithubDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubDB.swift; sourceTree = "<group>"; };
 		6C907C4627CDFD1500115B39 /* GithubRepositoriesSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubRepositoriesSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C907C4927CDFD1500115B39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6C907C4B27CDFD1500115B39 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				6C295BBA27CE097000ECAE81 /* UITableViewCell+Extension.swift */,
+				6C61FC7027CE608100261858 /* UIImage+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -86,6 +93,7 @@
 		6C295BBC27CE0C8A00ECAE81 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6C61FC6A27CE49BA00261858 /* Subviews */,
 				6C295BBD27CE0C9900ECAE81 /* MainViewController.swift */,
 			);
 			path = Views;
@@ -110,9 +118,18 @@
 		6C295BC727CE129000ECAE81 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				6C295BC827CE141600ECAE81 /* APIService.swift */,
+				6C295BC827CE141600ECAE81 /* APIBase.swift */,
+				6C61FC7227CE6C8600261858 /* GithubDB.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		6C61FC6A27CE49BA00261858 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				6C61FC6B27CE49DB00261858 /* RepositoriesListTableViewCell.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		6C907C3D27CDFD1500115B39 = {
@@ -134,12 +151,12 @@
 		6C907C4827CDFD1500115B39 /* GithubRepositoriesSearch */ = {
 			isa = PBXGroup;
 			children = (
+				6C295BAF27CE04CD00ECAE81 /* Coordinators */,
 				6C295BC727CE129000ECAE81 /* Network */,
 				6C295BC227CE0CD600ECAE81 /* Models */,
 				6C295BBF27CE0CBF00ECAE81 /* ViewModels */,
 				6C295BBC27CE0C8A00ECAE81 /* Views */,
 				6C295BB627CE08E900ECAE81 /* Utlities */,
-				6C295BAF27CE04CD00ECAE81 /* Coordinators */,
 				6C907C4927CDFD1500115B39 /* AppDelegate.swift */,
 				6C907C4B27CDFD1500115B39 /* SceneDelegate.swift */,
 				6C907C4F27CDFD1500115B39 /* Main.storyboard */,
@@ -223,6 +240,7 @@
 			files = (
 				6C295BB827CE090000ECAE81 /* PrepareClassInstance.swift in Sources */,
 				6C295BC627CE11A800ECAE81 /* MainCoordinator.swift in Sources */,
+				6C61FC7327CE6C8600261858 /* GithubDB.swift in Sources */,
 				6C907C4A27CDFD1500115B39 /* AppDelegate.swift in Sources */,
 				6C295BBB27CE097000ECAE81 /* UITableViewCell+Extension.swift in Sources */,
 				6C295BB527CE064100ECAE81 /* Coordinator.swift in Sources */,
@@ -231,7 +249,9 @@
 				6C295BB327CE063000ECAE81 /* AppCoordinator.swift in Sources */,
 				6C295BBE27CE0C9900ECAE81 /* MainViewController.swift in Sources */,
 				6C907C4C27CDFD1500115B39 /* SceneDelegate.swift in Sources */,
-				6C295BC927CE141600ECAE81 /* APIService.swift in Sources */,
+				6C295BC927CE141600ECAE81 /* APIBase.swift in Sources */,
+				6C61FC7127CE608100261858 /* UIImage+Extension.swift in Sources */,
+				6C61FC6C27CE49DB00261858 /* RepositoriesListTableViewCell.swift in Sources */,
 				6C295BB127CE04EF00ECAE81 /* CoordinatorPrototype.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
