@@ -21,7 +21,10 @@ extension GithubDB {
             fatalError("Couldn't create URLComponents.")
         }
         
-        components.queryItems = [URLQueryItem(name: "q", value: name), URLQueryItem(name: "page", value: String(format: "%d", page))]
+        components.queryItems = [
+            .init(name: "q", value: name),
+            .init(name: "page", value: String(format: "%d", page))
+        ]
         
         let request = URLRequest(url: components.url!, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10)
         

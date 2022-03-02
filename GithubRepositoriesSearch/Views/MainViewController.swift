@@ -38,11 +38,10 @@ class MainViewController: UIViewController {
         
         setupUI()
         
-        guard let viewModel = viewModel else {
-            return
-        }
+        guard let viewModel = viewModel else { return }
         
         bind(viewModel)
+        
     }
     
 }
@@ -51,10 +50,12 @@ class MainViewController: UIViewController {
 private extension MainViewController {
     
     func setupUI() {
+        
         view.backgroundColor = .white
         configureNavigationController()
         configureTableView()
-        setupSearchBarListeners()
+        addSearchControllerListeners()
+        
     }
     
     func configureTableView() {
@@ -81,20 +82,23 @@ private extension MainViewController {
         
     }
     
-    func setupSearchBarListeners() {
+    func addSearchControllerListeners() {
         
+        // Add publisher
         let publisher = NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification,
                                                                 object: searchController.searchBar.searchTextField)
         
+        // Add API request throttling to avoid too many requests
         publisher
             .map {
                 ($0.object as! UISearchTextField).text
             }
-            .debounce(for: .seconds(1), scheduler: RunLoop.main)
+            .throttle(for: .seconds(2), scheduler: RunLoop.main, latest: true)
             .sink { (searchString) in
-                self.viewModel?.input.searchRepository(by: searchString)
+                self.viewModel?.input.reload(by: searchString)
             }
             .store(in: &cancelable)
+        
     }
     
 }
@@ -103,9 +107,11 @@ private extension MainViewController {
 private extension MainViewController {
     
     func bind(_ viewModel: MainViewModelPrototype) {
+        
         viewModel
             .output
             .models.assign(to: \.models, on: self).store(in: &cancelable)
+        
     }
     
 }
@@ -125,6 +131,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = RepositoriesListTableViewCell.use(tableView: tableView, for: indexPath)
         let model = models[indexPath.row]
         
+        // Display repository full name
         cell.name = model.full_name
         
         return cell
@@ -132,6 +139,17 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let height = scrollView.frame.size.height
+        let contentOffsetY = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentOffsetY
+        
+        guard distanceFromBottom < height else { return }
+        
+        self.viewModel?.input.loadMore()
     }
 
 }
