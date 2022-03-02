@@ -57,7 +57,7 @@ struct RepositoryElementModel: Codable {
     let deployments_url: String
     let created_at: String
     let updated_at: String
-    let pushed_at: String
+    let pushed_at: String?
     let git_url: String
     let ssh_url: String
     let clone_url: String
@@ -126,8 +126,8 @@ struct License: Codable {
 
 struct RepositoryListModel: Codable {
     
-    let total_count: Int
-    let incomplete_results: Bool
-    let items: [RepositoryElementModel]
+    let total_count: Int?
+    let incomplete_results: Bool?
+    let items: [RepositoryElementModel]?
     
 }

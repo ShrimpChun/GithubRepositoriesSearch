@@ -88,12 +88,17 @@ private extension MainViewController {
         let publisher = NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification,
                                                                 object: searchController.searchBar.searchTextField)
         
+        // According to Github document: https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting
+        // The Search API has a custom rate limit.
+        // For requests using Basic Authentication, OAuth, or client ID and secret, we can make up to 30 requests per minute.
+        // For unauthenticated requests, the rate limit allows us to make up to 10 requests per minute.
+        
         // Add API request throttling to avoid too many requests
         publisher
             .map {
                 ($0.object as! UISearchTextField).text
             }
-            .throttle(for: .seconds(2), scheduler: RunLoop.main, latest: true)
+            .debounce(for: .seconds(1), scheduler: RunLoop.main)
             .sink { (searchString) in
                 self.viewModel?.input.reload(by: searchString)
             }
@@ -131,14 +136,18 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = RepositoriesListTableViewCell.use(tableView: tableView, for: indexPath)
         let model = models[indexPath.row]
         
-        // Display repository full name
+        // Display repository's full name
         cell.name = model.full_name
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         self.tableView.deselectRow(at: indexPath, animated: true)
+        
+        self.viewModel?.input.showRepositorInfo(by: indexPath.row)
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -150,6 +159,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         guard distanceFromBottom < height else { return }
         
         self.viewModel?.input.loadMore()
+        
     }
 
 }

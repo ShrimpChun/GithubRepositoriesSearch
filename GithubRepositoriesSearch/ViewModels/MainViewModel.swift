@@ -40,6 +40,7 @@ class MainViewModel: MainViewModelPrototype {
     private var incomplete_results = true
     private var searchrespositoryName = ""
     private var page = 1
+    
 }
 
 // MARK: - Input & Output
@@ -58,6 +59,7 @@ extension MainViewModel: MainViewModelInput {
         
         self.searchrespositoryName = name
         self.searchRepository(by: self.searchrespositoryName, page: 1)
+        
     }
     
     private func searchRepository(by name: String, page: Int) {
@@ -65,13 +67,15 @@ extension MainViewModel: MainViewModelInput {
         GithubDB.request(.searchRepository, name: name, page: page)
             .mapError { error -> Error in
                 self.isLoading = false
+                print(error)
                 return error
             }
             .sink { _ in
                 
             } receiveValue: {
-                self.page == 1 ? self.repositoryModels = $0.items : self.repositoryModels.append(contentsOf: $0.items)
-                self.incomplete_results = $0.incomplete_results
+                guard $0.items != nil else { return }
+                self.page == 1 ? self.repositoryModels = $0.items! : self.repositoryModels.append(contentsOf: $0.items!)
+                self.incomplete_results = $0.incomplete_results ?? true
                 self.isLoading = false
                 self.page += 1
             }
@@ -87,9 +91,13 @@ extension MainViewModel: MainViewModelInput {
         
         isLoading = true
         self.searchRepository(by: self.searchrespositoryName, page: self.page)
+        
     }
     
     func showRepositorInfo(by index: Int) {
+        
+        // We can do something...
+        print(self.repositoryModels[index])
         
     }
     
